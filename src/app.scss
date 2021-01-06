@@ -7,3 +7,50 @@
 
 // Global SCSS styling
 // @see https://docs.nativescript.org/ui/styling
+
+$themeColor: #35495E;
+
+.fab-button {
+  height: 60;
+  width: 60;
+  margin: 15;
+  background-color: #ff4081;
+  horizontal-align: right;
+  vertical-align: bottom;
+}
+
+ActionBar {
+  background-color: $themeColor;
+  color: #ffffff;
+}
+
+.title {
+  text-align: left;
+  color: white;
+  padding-left: 16;
+}
+
+.drawer-header {
+  padding: 16 40 16 40;
+  margin-bottom: 16;
+  background-color:  $themeColor;
+  color: #ffffff;
+  font-size: 24;
+}
+
+.drawer-item {
+  padding: 8 16;
+  color: #333333;
+  font-size: 16;
+}
+
+.drawer-close-button {
+  margin-top: 20;
+  padding: 10 10 10 10;
+  background-color:  $themeColor;
+  color: #ffffff;
+}
+
+.text--white{
+ color: white;
+}
