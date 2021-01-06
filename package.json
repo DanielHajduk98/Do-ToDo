@@ -6,15 +6,19 @@
   "author": "DanielHajduk98 <danhajduk@protonmail.com>",
   "license": "MIT",
   "dependencies": {
-    "vuex": "^3.5.1",
+    "@nativescript/core": "^7.0.3",
+    "@nativescript/firebase": "^11.1.3",
+    "@nativescript/theme": "^2.3.3",
     "@vue/devtools": "^5.3.3",
+    "firebase": "^8.2.1",
     "nativescript-socketio": "^3.3.1",
-    "nativescript-vue-devtools": "^1.4.0",
     "nativescript-toasty": "^3.0.0-alpha.2",
     "nativescript-ui-sidedrawer": "^9.0.0",
-    "@nativescript/theme": "^2.3.3",
     "nativescript-vue": "^2.8.1",
-    "@nativescript/core": "^7.0.3"
+    "nativescript-vue-devtools": "^1.4.0",
+    "vuefire": "^2.2.5",
+    "vuex": "^3.5.1",
+    "vuexfire": "^3.2.5"
   },
   "devDependencies": {
     "@babel/core": "^7.11.6",
@@ -22,8 +26,15 @@
     "@nativescript/android": "7.0.1",
     "@nativescript/webpack": "^3.0.4",
     "babel-loader": "^8.1.0",
+    "eslint": "^7.17.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-html": "^6.1.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^7.4.1",
     "nativescript-vue-template-compiler": "^2.8.1",
     "nativescript-worker-loader": "~0.12.1",
+    "prettier": "2.2.1",
     "sass": "^1.26.10",
     "vue-loader": "^15.9.3"
   }
