@@ -10,10 +10,11 @@
 // create a file named before-plugins.gradle in the current directory and place it there
 
 android {
-  defaultConfig {
-    minSdkVersion 17
-    generatedDensities = []
-  }
+   defaultConfig {
+      minSdkVersion 17
+      generatedDensities = []
+      multiDexEnabled true
+    }
   aaptOptions {
     additionalParameters "--no-version-vectors"
   }
