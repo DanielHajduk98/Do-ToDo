@@ -1,67 +1,50 @@
 <template>
-    <Page>
-        <ActionBar>
-            <GridLayout width="100%" columns="auto, *">
-                <Label text="MENU" @tap="$refs.drawer.nativeView.showDrawer()" col="0"/>
-                <Label class="title" text="Welcome to NativeScript-Vue!"  col="1"/>
-            </GridLayout>
-        </ActionBar>
-
-        <RadSideDrawer ref="drawer">
-            <StackLayout ~drawerContent backgroundColor="#ffffff">
-                <Label class="drawer-header" text="Drawer"/>
-
-                <Label class="drawer-item" text="Item 1"/>
-                <Label class="drawer-item" text="Item 2"/>
-                <Label class="drawer-item" text="Item 3"/>
-            </StackLayout>
-
-            <GridLayout ~mainContent columns="*" rows="*">
-                <Label class="message" :text="msg" col="0" row="0"/>
-            </GridLayout>
-        </RadSideDrawer>
-    </Page>
+  <Page actionBarHidden="true" class="splashScreenBg" loading="loading">
+    <SplashScreen />
+  </Page>
 </template>
 
-<script >
-  export default {
-    data() {
-      return {
-        msg: 'Hello World!'
+<script>
+import SplashScreen from "../components/SplashScreen";
+
+export default {
+  components: { SplashScreen },
+  data() {
+    return {};
+  },
+
+  async mounted() {
+    await Promise.all([this.$store.dispatch("authInit")]).then(() => {
+      if (this.isLogged) {
+        this.$navigateTo(this.$routes.Todos, { clearHistory: true });
+      } else {
+        this.$navigateTo(this.$routes.Login, { clearHistory: true });
       }
-    }
-  }
+    });
+  },
+
+  computed: {
+    isLogged: function () {
+      return this.$store.getters.isLogged;
+    },
+  },
+};
 </script>
 
 <style scoped>
-    ActionBar {
-        background-color: #53ba82;
-        color: #ffffff;
-    }
+.splashScreenBg {
+  width: 100%;
+  height: 100%;
+  background-color: lightgray;
+}
 
-    .title {
-        text-align: left;
-        padding-left: 16;
-    }
+@keyframes opacity {
+  from {
+    opacity: 0.6;
+  }
 
-    .message {
-        vertical-align: center;
-        text-align: center;
-        font-size: 20;
-        color: #333333;
-    }
-
-    .drawer-header {
-        padding: 50 16 16 16;
-        margin-bottom: 16;
-        background-color: #53ba82;
-        color: #ffffff;
-        font-size: 24;
-    }
-
-    .drawer-item {
-        padding: 8 16;
-        color: #333333;
-        font-size: 16;
-    }
+  to {
+    opacity: 1;
+  }
+}
 </style>
