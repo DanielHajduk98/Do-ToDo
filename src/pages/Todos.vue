@@ -26,35 +26,39 @@
         <Spinner v-if="todoListIsLoading" color="white" />
 
         <GridLayout v-show="!todoListIsLoading" rows="auto, *">
-          <RadListView
-            v-if="observableTodoList.length !== 0"
-            row="1"
-            ref="listView"
-            for="todo in observableTodoList"
-          >
-            <v-template>
-              <StackLayout
-                orientation="horizontal"
-                class="todoCard"
-                @longPress="editTodo(todo.name, todo.id)"
-              >
-                <check-box
-                  class="todoCard__checkBox"
-                  :checked="false"
-                  state_enabled="false"
-                  @checkedChange="deleteTodo($event, todo.id)"
-                  fillColor="white"
-                />
-                <Label
-                  textWrap="true"
-                  :text="todo.name"
-                  class="todoCard__label"
-                ></Label>
-              </StackLayout>
-            </v-template>
-          </RadListView>
+          <GridLayout row="1" orientation="vertical" rows="auto, *">
+            <RadListView
+              v-show="observableTodoList.length !== 0"
+              ref="todoListView"
+              for="todo in observableTodoList"
+            >
+              <v-template>
+                <StackLayout
+                  orientation="horizontal"
+                  class="todoCard"
+                  @longPress="editTodo(todo.name, todo.id)"
+                >
+                  <check-box
+                    class="todoCard__checkBox"
+                    checked="false"
+                    @checkedChange="deleteTodo($event, todo.id)"
+                    fillColor="white"
+                  />
+                  <Label
+                    textWrap="true"
+                    :text="todo.name"
+                    class="todoCard__label"
+                  ></Label>
+                </StackLayout>
+              </v-template>
+            </RadListView>
+          </GridLayout>
 
-          <StackLayout v-else row="1" class="noTodoMessage">
+          <StackLayout
+            v-if="observableTodoList.length === 0"
+            row="1"
+            class="noTodoMessage"
+          >
             <StackLayout class="noTodoMessage__item">
               <Image width="50" height="50" src="res://baseline_add_white_24" />
               <Label class="text--white" text="Nie masz żadnych zadań" />
@@ -91,6 +95,14 @@ export default {
   },
 
   methods: {
+    scrollToTop(animate = false) {
+      if (!this.todoListLoaded) return;
+
+      const todoListView = this.$refs.todoListView.nativeView;
+
+      todoListView.scrollToIndex(0, animate);
+    },
+
     editTodo(name, todoID) {
       this.$showModal(EditTodoModal, { props: { name: name, todoID: todoID } });
     },
@@ -111,13 +123,23 @@ export default {
   watch: {
     todoList: {
       handler(newData) {
-        console.log(newData);
+        //firestore adds empty createdAt and then adds timestamp
+        if (newData.some((item) => item.createdAt === null)) return;
+
         if (newData) {
           const newObservableArray = new ObservableArray([]);
 
           newObservableArray.push(...newData);
 
           this.observableTodoList = newObservableArray;
+
+          const oldLength = this.observableTodoList.length;
+
+          if (newData.length !== 0) {
+            if (newData.length > oldLength) {
+              this.scrollToTop(true);
+            }
+          }
         }
       },
     },
