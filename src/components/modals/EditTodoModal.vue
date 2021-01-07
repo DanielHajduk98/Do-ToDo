@@ -3,12 +3,12 @@
     <Label text="Nazwa zadania" textAlignment="center" class="addTaskHeader" />
     <TextField
       width="90%"
-      v-model="name"
+      v-model="newName"
       class="addTaskTextField"
       editable="true"
     />
 
-    <Button text="DODAJ ZADANIE" @tap="addTask" class="addTaskConfirmButton" />
+    <Button text="DODAJ ZADANIE" @tap="editTask" class="addTaskConfirmButton" />
   </StackLayout>
 </template>
 
@@ -16,19 +16,30 @@
 export default {
   data() {
     return {
-      name: "",
+      newName: "",
     };
   },
 
+  created() {
+    this.newName = this.name;
+  },
+
+  props: {
+    name: String,
+    todoID: String,
+  },
+
   methods: {
-    addTask() {
-      if (this.name === null) {
+    editTask() {
+      if (this.newName === null) {
         return;
       }
 
-      this.$store.dispatch("addTodo", this.name).then(() => {
-        this.$modal.close();
-      });
+      this.$store
+        .dispatch("editTodo", { name: this.newName, todoID: this.todoID })
+        .then(() => {
+          this.$modal.close();
+        });
     },
   },
 };

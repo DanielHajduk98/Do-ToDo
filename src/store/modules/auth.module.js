@@ -54,16 +54,6 @@ const mutations = {
 };
 
 const actions = {
-  test({}) {
-    firebase.firestore
-      .collection("test")
-      .doc("test")
-      .get()
-      .then((test) => {
-        console.log(test.data());
-      });
-  },
-
   async authInit({ commit, dispatch }) {
     console.log("authInit");
 

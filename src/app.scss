@@ -10,6 +10,11 @@
 
 $themeColor: #35495E;
 
+.bg-theme {
+  background-color: $themeColor;
+}
+
+
 .fab-button {
   height: 60;
   width: 60;
