@@ -99,7 +99,7 @@ const actions = {
       });
   },
 
-  signUp({ commit, dispatch }, { name, password, email }) {
+  signUp({ commit, dispatch }, { password, email }) {
     commit("authStart");
     console.log("signUp");
 
@@ -114,7 +114,6 @@ const actions = {
         await dispatch("createUserDoc", {
           uid: userData.uid,
           email: email,
-          name: name,
         });
       })
       .catch((err) => {
@@ -123,7 +122,7 @@ const actions = {
       });
   },
 
-  createUserDoc({ dispatch }, { uid, email, name }) {
+  createUserDoc({ dispatch }, { uid, email }) {
     console.log("createUserDoc");
 
     const usersRef = firebase.firestore.collection("users").doc(uid);
@@ -131,7 +130,6 @@ const actions = {
     return usersRef
       .set({
         email: email,
-        name: name,
         imageSrc: null,
       })
       .then(async () => {

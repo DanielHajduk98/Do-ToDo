@@ -15,11 +15,11 @@
     <RadSideDrawer ref="drawer">
       <StackLayout ~drawerContent class="wrapper">
         <StackLayout class="drawer-header">
-          <Image src="res://logoicon" />
+          <Image src="res://logo" />
         </StackLayout>
-        <Label class="drawer-item" text="Item 1" />
-        <Label class="drawer-item" text="Item 2" />
-        <Label class="drawer-item" text="Item 3" />
+        <Button class="button" text="Zadania" @tap="navigateTo('todos')" />
+        <Button class="button" text="Profil" @tap="navigateTo('profile')" />
+        <Button class="button" text="Wyloguj" @tap="logout" />
       </StackLayout>
 
       <StackLayout ~mainContent class="bg-theme">
@@ -87,9 +87,12 @@ import Spinner from "../components/Spinner";
 import AddTodoModal from "../components/modals/AddTodoModal";
 import { mapGetters } from "vuex";
 import EditTodoModal from "../components/modals/EditTodoModal";
+import drawerMethods from "../mixins/drawerMethods";
 
 export default {
   components: { Spinner },
+
+  mixins: [drawerMethods],
 
   data() {
     return {
@@ -179,5 +182,12 @@ $themeColor: #35495e;
     verticalalignment: "center";
     horizontalalignment: "center";
   }
+}
+
+.button {
+  background-color: lightgray;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>

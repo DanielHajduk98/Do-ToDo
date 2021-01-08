@@ -6,10 +6,14 @@
       width="90%"
       v-model="name"
       class="addTaskTextField"
-      editable="true"
     />
 
-    <Button text="DODAJ ZADANIE" @tap="addTask" class="addTaskConfirmButton" />
+    <Button
+      :isEnabled="blockButton"
+      text="DODAJ ZADANIE"
+      @tap="addTask"
+      class="button"
+    />
   </StackLayout>
 </template>
 
@@ -32,6 +36,12 @@ export default {
       });
     },
   },
+
+  computed: {
+    blockButton: function () {
+      return !this.$store.getters.todoActionsLoading;
+    },
+  },
 };
 </script>
 
@@ -52,7 +62,7 @@ export default {
   margin-bottom: 50px;
 }
 
-.addTaskConfirmButton {
+.button {
   background-color: lightgray;
   color: black;
   font-size: 18px;

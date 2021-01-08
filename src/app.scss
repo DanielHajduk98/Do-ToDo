@@ -10,6 +10,13 @@
 
 $themeColor: #35495E;
 
+.button {
+  background-color: lightgray;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .bg-theme {
   background-color: $themeColor;
 }
@@ -64,5 +71,6 @@ ActionBar {
 }
 
 .text--white{
- color: white;
+  placeholder-color: white;
+  color: white;
 }

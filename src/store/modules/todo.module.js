@@ -5,9 +5,14 @@ const state = {
   todoList: [],
   todoListIsLoading: true,
   highestIndex: 0,
+  todoActionsLoading: false,
 };
 
 const getters = {
+  todoActionsLoading: (state) => {
+    return state.todoActionsLoading;
+  },
+
   todoList: (state) => {
     return state.todoList;
   },
@@ -18,6 +23,14 @@ const getters = {
 };
 
 const mutations = {
+  startTodoAction() {
+    state.todoActionsLoading = true;
+  },
+
+  finishTodoAction() {
+    state.todoActionsLoading = false;
+  },
+
   fetchTodoListStart(state) {
     state.todoListIsLoading = true;
   },
@@ -56,8 +69,9 @@ const actions = {
       });
   }),
 
-  addTodo({ rootGetters }, name) {
+  addTodo({ rootGetters, commit }, name) {
     console.log("addTodo");
+    commit("startTodoAction");
 
     const uid = rootGetters.getUser.uid;
 
@@ -70,16 +84,22 @@ const actions = {
         name: name,
       })
       .then(async (todoDoc) => {
-        await todoDoc.update({
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
+        await todoDoc
+          .update({
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          })
+          .then(() => {
+            commit("finishTodoAction");
+          });
       })
       .catch((err) => {
         alert(err);
       });
   },
 
-  editTodo({ rootGetters }, { name, todoID }) {
+  editTodo({ rootGetters, commit }, { name, todoID }) {
+    commit("startTodoAction");
+
     const uid = rootGetters.getUser.uid;
 
     const todosRef = firebase.firestore.collection(
@@ -91,6 +111,9 @@ const actions = {
       .update({
         name: name,
         done: false,
+      })
+      .then(() => {
+        commit("finishTodoAction");
       })
       .catch((err) => {
         alert(err);
