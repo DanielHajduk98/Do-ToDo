@@ -2,6 +2,7 @@
   <StackLayout class="addTaskModal">
     <Label text="Nazwa zadania" textAlignment="center" class="addTaskHeader" />
     <TextField
+      hint="Nazwa zadania"
       width="90%"
       v-model="name"
       class="addTaskTextField"
@@ -27,7 +28,7 @@ export default {
       }
 
       this.$store.dispatch("addTodo", this.name).then(() => {
-        this.$modal.close();
+        this.$modal.close(true);
       });
     },
   },
@@ -38,7 +39,6 @@ export default {
 .addTaskModal {
   margin: 20px;
   vertical-align: center;
-  background-color: white;
 }
 
 .addTaskHeader {

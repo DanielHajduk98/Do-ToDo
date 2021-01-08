@@ -26,36 +26,40 @@
         <Spinner v-if="todoListIsLoading" color="white" />
 
         <GridLayout v-show="!todoListIsLoading" rows="auto, *">
-          <GridLayout row="1" orientation="vertical" rows="auto, *">
-            <RadListView
-              v-show="observableTodoList.length !== 0"
-              ref="todoListView"
-              for="todo in observableTodoList"
-            >
-              <v-template>
-                <StackLayout
-                  orientation="horizontal"
-                  class="todoCard"
-                  @longPress="editTodo(todo.name, todo.id)"
-                >
-                  <check-box
-                    class="todoCard__checkBox"
-                    checked="false"
-                    @checkedChange="deleteTodo($event, todo.id)"
-                    fillColor="white"
-                  />
-                  <Label
-                    textWrap="true"
-                    :text="todo.name"
-                    class="todoCard__label"
-                  ></Label>
-                </StackLayout>
-              </v-template>
-            </RadListView>
-          </GridLayout>
+          <ListView
+            separatorColor="transparent"
+            row="1"
+            v-show="todoList.length !== 0"
+            id="todoListView"
+            ref="todoListView"
+            for="todo in todoList"
+            @loaded="todoListViewLoaded = true"
+          >
+            <v-template>
+              <StackLayout
+                orientation="horizontal"
+                class="todoCard"
+                @longPress="editTodo(todo.name, todo.id)"
+              >
+                <check-box
+                  class="todoCard__checkBox"
+                  :checked="todo.done"
+                  @checkedChange="
+                    (isChecked = false), deleteTodo($event, todo.id)
+                  "
+                  fillColor="white"
+                />
+                <Label
+                  textWrap="true"
+                  :text="todo.name"
+                  class="todoCard__label"
+                ></Label>
+              </StackLayout>
+            </v-template>
+          </ListView>
 
           <StackLayout
-            v-if="observableTodoList.length === 0"
+            v-if="todoList.length === 0"
             row="1"
             class="noTodoMessage"
           >
@@ -82,7 +86,6 @@
 import Spinner from "../components/Spinner";
 import AddTodoModal from "../components/modals/AddTodoModal";
 import { mapGetters } from "vuex";
-import { ObservableArray } from "tns-core-modules/data/observable-array";
 import EditTodoModal from "../components/modals/EditTodoModal";
 
 export default {
@@ -90,13 +93,13 @@ export default {
 
   data() {
     return {
-      observableTodoList: new ObservableArray([]),
+      todoListViewLoaded: false,
     };
   },
 
   methods: {
     scrollToTop(animate = false) {
-      if (!this.todoListLoaded) return;
+      if (!this.todoListViewLoaded) return;
 
       const todoListView = this.$refs.todoListView.nativeView;
 
@@ -116,32 +119,12 @@ export default {
     },
 
     openAddTodoModal() {
-      this.$showModal(AddTodoModal);
-    },
-  },
-
-  watch: {
-    todoList: {
-      handler(newData) {
-        //firestore adds empty createdAt and then adds timestamp
-        if (newData.some((item) => item.createdAt === null)) return;
-
-        if (newData) {
-          const newObservableArray = new ObservableArray([]);
-
-          newObservableArray.push(...newData);
-
-          this.observableTodoList = newObservableArray;
-
-          const oldLength = this.observableTodoList.length;
-
-          if (newData.length !== 0) {
-            if (newData.length > oldLength) {
-              this.scrollToTop(true);
-            }
-          }
+      this.$showModal(AddTodoModal).then((added) => {
+        console.log(added);
+        if (added) {
+          this.scrollToTop(true);
         }
-      },
+      });
     },
   },
 

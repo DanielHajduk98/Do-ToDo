@@ -90,6 +90,7 @@ const actions = {
       .doc(todoID)
       .update({
         name: name,
+        done: false,
       })
       .catch((err) => {
         alert(err);
@@ -98,13 +99,14 @@ const actions = {
   },
 
   deleteTodo({ rootGetters }, todoID) {
+    console.log("delete");
     const uid = rootGetters.getUser.uid;
 
     const todosRef = firebase.firestore.collection(
       "todos/" + uid + "/todoList"
     );
 
-    todosRef
+    return todosRef
       .doc(todoID)
       .delete()
       .catch((err) => {

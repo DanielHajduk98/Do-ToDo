@@ -49,7 +49,6 @@ export default {
 .addTaskModal {
   margin: 20px;
   vertical-align: center;
-  background-color: white;
 }
 
 .addTaskHeader {
