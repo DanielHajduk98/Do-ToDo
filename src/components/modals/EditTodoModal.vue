@@ -1,14 +1,14 @@
 <template>
   <StackLayout class="addTaskModal">
-    <Label text="Nazwa zadania" textAlignment="center" class="addTaskHeader" />
-    <TextField
-      width="90%"
-      v-model="newName"
-      class="addTaskTextField"
-      editable="true"
-    />
+    <Label text="Edytuj zadanie" textAlignment="center" class="addTaskHeader" />
+    <TextField width="90%" v-model="newName" class="addTaskTextField" />
 
-    <Button text="DODAJ ZADANIE" @tap="editTask" class="addTaskConfirmButton" />
+    <Button
+      :isEnabled="blockButton"
+      text="DODAJ ZADANIE"
+      @tap="editTask"
+      class="button"
+    />
   </StackLayout>
 </template>
 
@@ -42,6 +42,12 @@ export default {
         });
     },
   },
+
+  computed: {
+    blockButton: function () {
+      return !this.$store.getters.todoActionsLoading;
+    },
+  },
 };
 </script>
 
@@ -62,7 +68,7 @@ export default {
   margin-bottom: 50px;
 }
 
-.addTaskConfirmButton {
+.button {
   background-color: lightgray;
   color: black;
   font-size: 18px;

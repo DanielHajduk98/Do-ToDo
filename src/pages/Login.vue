@@ -43,8 +43,17 @@
         </StackLayout>
 
         <StackLayout class="buttonsLayout">
-          <Button :isEnabled="!authIsLoading" text="Zaloguj" @tap="login" />
-          <Button text="Do rejestracji" @tap="redirectToRegister" />
+          <Button
+            class="button"
+            :isEnabled="!authIsLoading"
+            text="Zaloguj"
+            @tap="login"
+          />
+          <Button
+            class="button"
+            text="Do rejestracji"
+            @tap="redirectToRegister"
+          />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -118,6 +127,13 @@ export default {
 </script>
 
 <style scoped>
+.button {
+  background-color: lightgray;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .home-panel {
   vertical-align: center;
   font-size: 20;

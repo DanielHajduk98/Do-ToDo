@@ -3,18 +3,29 @@
     <ActionBar :text="this.$title" />
     <ScrollView height="100%">
       <StackLayout class="home-panel">
-        <StackLayout class="input">
-          <Label text="Rejestracja" class="titleLabel" />
+        <Label text="Rejestracja" class="titleLabel" />
 
+        <StackLayout class="input">
           <TextField
-            v-model="$v.name.$model"
-            hint="Nazwa"
+            v-model="$v.email.$model"
+            hint="Email"
             class="input__field"
             @textChange="hideErrors"
           />
           <Label
-            v-if="showErrors && !$v.name.required"
+            v-if="showErrors && authError"
+            :text="authError"
+            class="text--danger text--small"
+            textWrap="true"
+          />
+          <Label
+            v-else-if="showErrors && !$v.email.required"
             text="Pole wymagane"
+            class="text--danger text--small"
+          />
+          <Label
+            v-else-if="showErrors && !$v.email.email"
+            text="Błędny format email"
             class="text--danger text--small"
           />
         </StackLayout>
@@ -59,38 +70,14 @@
           />
         </StackLayout>
 
-        <StackLayout class="input">
-          <TextField
-            v-model="$v.email.$model"
-            hint="Email"
-            class="input__field"
-            @textChange="hideErrors"
-          />
-          <Label
-            v-if="showErrors && authError"
-            :text="authError"
-            class="text--danger text--small"
-            textWrap="true"
-          />
-          <Label
-            v-else-if="showErrors && !$v.email.required"
-            text="Pole wymagane"
-            class="text--danger text--small"
-          />
-          <Label
-            v-else-if="showErrors && !$v.email.email"
-            text="Błędny format email"
-            class="text--danger text--small"
-          />
-        </StackLayout>
-
         <StackLayout class="buttonsLayout">
           <Button
             :isEnabled="!authIsLoading || !$v.$invalid"
             text="Zarejestruj"
             @tap="register"
+            class="button"
           />
-          <Button text="Powrót" @tap="redirectToLogin" />
+          <Button text="Powrót" class="button" @tap="redirectToLogin" />
         </StackLayout>
       </StackLayout>
     </ScrollView>
@@ -109,7 +96,6 @@ import {
 export default {
   data() {
     return {
-      name: "",
       password: "",
       passwordConfirm: "",
       email: "",
@@ -118,10 +104,6 @@ export default {
   },
 
   validations: {
-    name: {
-      required,
-      maxLength: maxLength(255),
-    },
     password: {
       required,
       minLength: minLength(6),
@@ -172,7 +154,6 @@ export default {
       }
       this.$store
         .dispatch("signUp", {
-          name: this.name,
           email: this.email.toLowerCase(),
           password: this.password,
         })
@@ -188,6 +169,13 @@ export default {
 </script>
 
 <style scoped>
+.button {
+  background-color: lightgray;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .home-panel {
   vertical-align: center;
   font-size: 20;
