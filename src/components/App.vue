@@ -1,6 +1,6 @@
 <template>
   <Page actionBarHidden="true" class="splashScreenBg" loading="loading">
-    <SplashScreen />
+    <SplashScreen color="white" />
   </Page>
 </template>
 
@@ -9,12 +9,9 @@ import SplashScreen from "../components/SplashScreen";
 
 export default {
   components: { SplashScreen },
-  data() {
-    return {};
-  },
 
   async mounted() {
-    await Promise.all([this.$store.dispatch("authInit")]).then(() => {
+    this.$store.dispatch("authInit").then(() => {
       if (this.isLogged) {
         this.$navigateTo(this.$routes.Todos, { clearHistory: true });
       } else {
@@ -35,7 +32,7 @@ export default {
 .splashScreenBg {
   width: 100%;
   height: 100%;
-  background-color: lightgray;
+  background-color: #35495e;
 }
 
 @keyframes opacity {

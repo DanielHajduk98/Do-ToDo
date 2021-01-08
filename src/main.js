@@ -4,6 +4,24 @@ import VueDevtools from "nativescript-vue-devtools";
 import { firebase } from "@nativescript/firebase";
 import Vuelidate from "vuelidate";
 import routes from "./routes/routes";
+import RadListView from "nativescript-ui-listview/vue";
+import Theme from "@nativescript/theme";
+
+Theme.setMode(Theme.Dark); // Or Theme.Light
+
+
+Vue.registerElement(
+  "CheckBox",
+  () => require("@nstudio/nativescript-checkbox").CheckBox,
+  {
+    model: {
+      prop: "checked",
+      event: "checkedChange",
+    },
+  }
+);
+
+Vue.use(RadListView);
 
 Vue.registerElement(
   "Fab",
@@ -14,7 +32,6 @@ Vue.use(Vuelidate);
 
 firebase.init({}).then(
   function () {
-    store.dispatch("test");
     console.log("firebase.init done");
   },
   function (error) {
